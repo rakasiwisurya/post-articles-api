@@ -51,6 +51,15 @@ func (h *Handler) List(c fiber.Ctx) error {
 	if err != nil {
 		return respondError(c, err)
 	}
+
+	total, err := h.service.Count(c.Context(), status)
+	if err != nil {
+		return respondError(c, err)
+	}
+
+	// Total exposed as a header so the response body stays the plain array
+	// required by the test spec while clients can still paginate properly.
+	c.Set("X-Total-Count", strconv.FormatInt(total, 10))
 	return c.JSON(articles)
 }
 

@@ -25,6 +25,7 @@ func (e *ValidationError) Error() string {
 type Service interface {
 	Create(ctx context.Context, req UpsertRequest) (Article, error)
 	List(ctx context.Context, limit, offset int, status string) ([]Article, error)
+	Count(ctx context.Context, status string) (int64, error)
 	Get(ctx context.Context, id int64) (Article, error)
 	Update(ctx context.Context, id int64, req UpsertRequest) (Article, error)
 	Delete(ctx context.Context, id int64) error
@@ -52,6 +53,10 @@ func (s *service) Create(ctx context.Context, req UpsertRequest) (Article, error
 
 func (s *service) List(ctx context.Context, limit, offset int, status string) ([]Article, error) {
 	return s.repo.List(ctx, limit, offset, status)
+}
+
+func (s *service) Count(ctx context.Context, status string) (int64, error) {
+	return s.repo.Count(ctx, status)
 }
 
 func (s *service) Get(ctx context.Context, id int64) (Article, error) {

@@ -14,6 +14,7 @@ var ErrNotFound = errors.New("article not found")
 type Repository interface {
 	Create(ctx context.Context, req UpsertRequest) (Article, error)
 	List(ctx context.Context, limit, offset int, status string) ([]Article, error)
+	Count(ctx context.Context, status string) (int64, error)
 	GetByID(ctx context.Context, id int64) (Article, error)
 	Update(ctx context.Context, id int64, req UpsertRequest) (Article, error)
 	Delete(ctx context.Context, id int64) error
@@ -71,6 +72,21 @@ func (r *mysqlRepository) List(ctx context.Context, limit, offset int, status st
 		articles = append(articles, article)
 	}
 	return articles, rows.Err()
+}
+
+func (r *mysqlRepository) Count(ctx context.Context, status string) (int64, error) {
+	query := "SELECT COUNT(*) FROM posts"
+	args := make([]any, 0, 1)
+	if status != "" {
+		query += " WHERE status = ?"
+		args = append(args, status)
+	}
+
+	var total int64
+	if err := r.db.QueryRowContext(ctx, query, args...).Scan(&total); err != nil {
+		return 0, fmt.Errorf("count posts: %w", err)
+	}
+	return total, nil
 }
 
 func (r *mysqlRepository) GetByID(ctx context.Context, id int64) (Article, error) {

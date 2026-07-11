@@ -33,7 +33,9 @@ func main() {
 	app := fiber.New(fiber.Config{AppName: "post-articles-api"})
 	app.Use(recoverer.New())
 	app.Use(logger.New())
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		ExposeHeaders: []string{"X-Total-Count"},
+	}))
 
 	handler := article.NewHandler(article.NewService(article.NewRepository(db)))
 	article.RegisterRoutes(app, handler)
