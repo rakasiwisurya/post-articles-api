@@ -1,6 +1,6 @@
 # Post Articles API
 
-Article microservice for **Test Backend - Sharing Vision 2023**, built with Go, [Fiber v3](https://gofiber.io) and MySQL.
+Article microservice, built with Go, [Fiber v3](https://gofiber.io) and MySQL.
 
 ## Tech Stack
 
@@ -34,14 +34,14 @@ The article feature follows a layered flow: **handler → service → repository
    cp .env.example .env
    ```
 
-   | Variable      | Default     | Description        |
-   |---------------|-------------|--------------------|
-   | `APP_PORT`    | `8080`      | HTTP port          |
-   | `DB_HOST`     | `127.0.0.1` | MySQL host         |
-   | `DB_PORT`     | `3306`      | MySQL port         |
-   | `DB_USER`     | `root`      | MySQL user         |
-   | `DB_PASSWORD` | *(empty)*   | MySQL password     |
-   | `DB_NAME`     | `article`   | Database name      |
+   | Variable      | Default     | Description    |
+   | ------------- | ----------- | -------------- |
+   | `APP_PORT`    | `8080`      | HTTP port      |
+   | `DB_HOST`     | `127.0.0.1` | MySQL host     |
+   | `DB_PORT`     | `3306`      | MySQL port     |
+   | `DB_USER`     | `root`      | MySQL user     |
+   | `DB_PASSWORD` | _(empty)_   | MySQL password |
+   | `DB_NAME`     | `article`   | Database name  |
 
 3. Run the API:
 
@@ -54,13 +54,13 @@ On startup the service creates the `article` database when missing and applies t
 
 ## API Endpoints
 
-| # | Method                | URL                          | Description                                   |
-|---|-----------------------|------------------------------|-----------------------------------------------|
-| 1 | `POST`                | `/article/`                  | Create a new article                          |
-| 2 | `GET`                 | `/article/<limit>/<offset>`  | List articles with paging (`?status=` filter optional) |
-| 3 | `GET`                 | `/article/<id>`              | Get one article                               |
-| 4 | `POST`/`PUT`/`PATCH`  | `/article/<id>`              | Update an article                             |
-| 5 | `DELETE`              | `/article/<id>`              | Delete an article                             |
+| #   | Method               | URL                         | Description                                            |
+| --- | -------------------- | --------------------------- | ------------------------------------------------------ |
+| 1   | `POST`               | `/article/`                 | Create a new article                                   |
+| 2   | `GET`                | `/article/<limit>/<offset>` | List articles with paging (`?status=` filter optional) |
+| 3   | `GET`                | `/article/<id>`             | Get one article                                        |
+| 4   | `POST`/`PUT`/`PATCH` | `/article/<id>`             | Update an article                                      |
+| 5   | `DELETE`             | `/article/<id>`             | Delete an article                                      |
 
 Request body for create/update:
 
