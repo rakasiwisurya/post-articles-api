@@ -1,4 +1,4 @@
-module post-arctiles-api
+module post-articles-api
 
 go 1.25.5
 
