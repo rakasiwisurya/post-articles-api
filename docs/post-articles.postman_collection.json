@@ -1,0 +1,96 @@
+{
+	"info": {
+		"name": "Post Articles API - Sharing Vision 2023",
+		"description": "Postman collection for the Test Backend - Sharing Vision 2023 article microservice.\n\nSet the `base_url` collection variable (default http://localhost:8080) before running.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Create Article",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"My First Article About Golang Microservice\",\n    \"content\": \"This article walks through building a small article microservice with Go, Fiber and MySQL. It covers project structure, configuration, database migrations, repositories, services, request validation and HTTP handlers, so the resulting service stays easy to read, test and extend over time.\",\n    \"category\": \"technology\",\n    \"status\": \"publish\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/article/",
+					"host": ["{{base_url}}"],
+					"path": ["article", ""]
+				},
+				"description": "Creates a new article. Validation: title >= 20 chars, content >= 200 chars, category >= 3 chars, status one of publish | draft | thrash."
+			}
+		},
+		{
+			"name": "List Articles (limit & offset)",
+			"request": {
+				"method": "GET",
+				"url": {
+					"raw": "{{base_url}}/article/10/0",
+					"host": ["{{base_url}}"],
+					"path": ["article", "10", "0"]
+				},
+				"description": "Lists articles with paging. Path is /article/<limit>/<offset>. Optional query ?status=publish|draft|thrash filters by status."
+			}
+		},
+		{
+			"name": "Get Article by ID",
+			"request": {
+				"method": "GET",
+				"url": {
+					"raw": "{{base_url}}/article/1",
+					"host": ["{{base_url}}"],
+					"path": ["article", "1"]
+				},
+				"description": "Returns a single article by id. Responds 404 when the id does not exist."
+			}
+		},
+		{
+			"name": "Update Article",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"My Updated Article About Golang Microservice\",\n    \"content\": \"This updated article walks through building a small article microservice with Go, Fiber and MySQL. It covers project structure, configuration, database migrations, repositories, services, request validation and HTTP handlers, so the resulting service stays easy to read, test and extend.\",\n    \"category\": \"technology\",\n    \"status\": \"draft\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/article/1",
+					"host": ["{{base_url}}"],
+					"path": ["article", "1"]
+				},
+				"description": "Updates the article with the requested id. POST and PATCH to the same URL are also accepted. Same validation rules as create."
+			}
+		},
+		{
+			"name": "Delete Article",
+			"request": {
+				"method": "DELETE",
+				"url": {
+					"raw": "{{base_url}}/article/1",
+					"host": ["{{base_url}}"],
+					"path": ["article", "1"]
+				},
+				"description": "Deletes the article with the requested id. Responds 404 when the id does not exist."
+			}
+		}
+	]
+}
