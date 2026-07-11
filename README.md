@@ -25,9 +25,16 @@ server/
 
 The article feature follows a layered flow: **handler → service → repository**. Handlers only translate HTTP, the service owns validation/business rules, and the repository owns SQL.
 
-## Getting Started
+## How to Run
 
-1. Make sure MySQL is running (e.g. XAMPP on `localhost:3306`).
+**Prerequisites:** Go 1.25+, a running MySQL server (e.g. XAMPP's MySQL on `localhost:3306`).
+
+1. Move into this folder:
+
+   ```bash
+   cd server
+   ```
+
 2. Copy the environment file and adjust if needed:
 
    ```bash
@@ -43,14 +50,37 @@ The article feature follows a layered flow: **handler → service → repository
    | `DB_PASSWORD` | _(empty)_   | MySQL password |
    | `DB_NAME`     | `article`   | Database name  |
 
-3. Run the API:
+3. Download dependencies (only needed once, or after pulling changes):
+
+   ```bash
+   go mod tidy
+   ```
+
+4. Run the API:
 
    ```bash
    go run ./cmd/api
    # or: make run
    ```
 
-On startup the service creates the `article` database when missing and applies the embedded migrations (posts table). The manual DDL for the database section of the test is in [docs/manual_schema.sql](docs/manual_schema.sql).
+   To run a compiled binary instead:
+
+   ```bash
+   go build -o bin/post-articles-api ./cmd/api
+   ./bin/post-articles-api
+   ```
+
+On startup the service creates the `article` database when missing and applies the embedded migrations (posts table) automatically — no manual migration step is required. The manual DDL for the database section of the test is in [docs/manual_schema.sql](docs/manual_schema.sql).
+
+5. Verify it's up:
+
+   ```bash
+   curl http://localhost:8080/article/10/0
+   ```
+
+   You should get back `200 OK` with a JSON array (empty `[]` on a fresh database).
+
+The API listens on `http://localhost:8080` by default. To also run the dashboard against it, see [`../client/README.md`](../client/README.md).
 
 ## API Endpoints
 
